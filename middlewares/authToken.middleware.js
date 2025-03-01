@@ -27,6 +27,5 @@ const authenticateUserToken = (req, res, next) => {
   });
 };
 module.exports = {
-  authenticateHotelAdministratorToken,
   authenticateUserToken,
 };

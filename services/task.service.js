@@ -1,4 +1,4 @@
-const Hotel = require("../models/hotel.model");
+const Tasks = require("../models/task.model");
 const path = require("path");
 const fs = require("fs-extra");
 

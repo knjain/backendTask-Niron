@@ -11,8 +11,10 @@ module.exports = { 
   createNewUser: async (req, res) => {
     try {
       const { firstName, lastName, email, phoneNumber, password } = req.body;
-
+  
+      // Hash password
       const hashedPassword = await securePassword(password);
+  
       const response = await userService.createNewUser(
         firstName,
         lastName,
@@ -20,19 +22,38 @@ module.exports = { 
         phoneNumber,
         hashedPassword
       );
-
-      if (response) {
-        return res.status(201).json({
-          data: response,
-          success: true,
-          message: "New User registered",
+  
+      if (!response) {
+        return res.status(400).json({
+          success: false,
+          message: "User registration failed",
         });
       }
+  
+      // Generate JWT token
+      const token = jwt.sign(
+        {
+          email: response.email,
+          userId: response._id,
+        },
+        USER_TOKEN_SECRET,
+        { expiresIn: USER_TOKEN_SECRET_EXPIRY }
+      );
+  
+      // Send response with user data and token
+      return res.status(201).json({
+        data: response,
+        success: true,
+        message: "User successfully registered",
+        token,
+      });
+  
     } catch (error) {
-      console.error(error);
+      console.error("Error in createNewUser:", error);
       res.status(500).json({ message: "Internal Server Error" });
     }
   },
+  
 
   userLogin: async (req, res) => {
     try {
