@@ -10,7 +10,6 @@ module.exports = {
         email,
         phoneNumber,
         password,
-        role: "User",
       });
 
       const savedUser = await newUser.save();

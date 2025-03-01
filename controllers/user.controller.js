@@ -11,7 +11,6 @@ module.exports = { 
   createNewUser: async (req, res) => {
     try {
       const { firstName, lastName, email, phoneNumber, password } = req.body;
-  
       // Hash password
       const hashedPassword = await securePassword(password);
   

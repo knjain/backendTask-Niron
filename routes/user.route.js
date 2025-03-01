@@ -8,13 +8,13 @@ const { createNewUserSchema, loginUserSchema } = require("../validations/user.va
 
 // POST Routes
 router.post(
-  "/createNewUser",
+  "/register",
   validate(createNewUserSchema),
   userController.createNewUser
 );
 
 router.post(
-  "/userLogin",
+  "/login",
   validate(loginUserSchema),
   userController.userLogin
 );
