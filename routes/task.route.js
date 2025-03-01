@@ -13,14 +13,14 @@ const {
 
 const router = express.Router();
 
+router.get("/", authenticateUserToken, taskController.getTaskById); 
+
 router.post(
   "/",
   authenticateUserToken,
   validate(taskSchema), 
   taskController.createTask 
 );
-
-router.get("/:id", taskController.getTaskById); 
 
 router.put(
   "/:id",

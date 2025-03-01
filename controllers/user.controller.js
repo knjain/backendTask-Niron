@@ -5,6 +5,7 @@ const {
   USER_TOKEN_SECRET_EXPIRY,
 } = require("../configs/constants.config");
 const securePassword = require("../utils/bcrypt.util");
+const bcrypt = require("bcryptjs");
 
 module.exports = { 
   
@@ -53,7 +54,6 @@ module.exports = { 
     }
   },
   
-
   userLogin: async (req, res) => {
     try {
       const { email, password } = req.body;
@@ -68,23 +68,27 @@ module.exports = { 
         return res.status(401).json({ message: "Invalid credentials" });
       }
 
-      if (user) {
-        const token = jwt.sign(
-          {
-            email: email,
-            userId: user._id,
-          },
-          // process.env.JWT_SECRET,
-          USER_TOKEN_SECRET,
-          { expiresIn: USER_TOKEN_SECRET_EXPIRY }
-        );
-        return res.status(201).json({
-          data: user,
-          success: true,
-          message: "User Logged In",
-          token,
-        });
-      }
+      // Convert Mongoose object to plain JavaScript object & remove sensitive fields
+      const userObj = user.toObject();
+      delete userObj.password;
+
+      // Generate JWT token
+      const token = jwt.sign(
+        {
+          email: email,
+          userId: user._id,
+        },
+        USER_TOKEN_SECRET,
+        { expiresIn: USER_TOKEN_SECRET_EXPIRY }
+      );
+
+      return res.status(200).json({
+        data: userObj,
+        success: true,
+        message: "User Logged In",
+        token,
+      });
+
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: "Internal Server Error" });

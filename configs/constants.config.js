@@ -12,10 +12,18 @@ const PROFILE_PHOTOS_PATH = "profile-photos";
 
 // ############### Enums###############
 const TASK_STATUS = {
-  INCOMPLETE: "incomplete",
-  COMPLETED: "completed",
+  PENDING: "Pending",
+  COMPLETED: "Completed",
 };
-const TASK_STATUS_ENUM= [TASK_STATUS.INCOMPLETE, TASK_STATUS.COMPLETED];
+
+const TASK_PRIORITY = {
+  LOW: "Low",
+  MEDIUM: "Medium",
+  HIGH: "High",
+};
+
+const TASK_STATUS_ENUM = Object.values(TASK_STATUS); //["Pending", "Completed"]
+const TASK_PRIORITY_ENUM = Object.values(TASK_PRIORITY); //["Low", "Medium", "High"]
 
 // ############### Creds from env file###############
 
@@ -35,5 +43,7 @@ module.exports = {
   USER_TOKEN_SECRET_EXPIRY,
   eventNames,
   TASK_STATUS,
-  TASK_STATUS_ENUM
+  TASK_STATUS_ENUM,
+  TASK_PRIORITY_ENUM,
+  TASK_PRIORITY,
 };

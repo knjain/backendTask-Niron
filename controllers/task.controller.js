@@ -3,13 +3,13 @@ const taskService = require("../services/task.service");
 module.exports = {
   createTask: async (req, res) => {
     try {
-      const hotel = await taskService.createTask(
+      const task = await taskService.createTask(
         req.body,
-        req.user._id
+        req.user.userId
       );
       return res.status(201).json({
         success: true,
-        hotel,
+        task,
         message: "Task created successfully",
       });
     } catch (error) {
@@ -19,8 +19,8 @@ module.exports = {
 
   getTaskById: async (req, res) => {
     try {
-      const hotel = await taskService.getTaskById(req.params.id);
-      res.status(200).json(hotel);
+      const tasks = await taskService.getTaskById(req.user.userId);
+      res.status(200).json(tasks);
     } catch (err) {
       res.status(404).json({ error: err.message });
     }

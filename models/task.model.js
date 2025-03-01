@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const {TASK_STATUS_ENUM,TASK_STATUS} = require("../configs/constants.config")
+const {TASK_STATUS_ENUM,TASK_STATUS, TASK_PRIORITY_ENUM, TASK_PRIORITY} = require("../configs/constants.config")
 
 const taskSchema = new mongoose.Schema({
   name: {
@@ -11,17 +11,18 @@ const taskSchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
-  taskDescription: {
+  description: {
     type: String,
   },
   status: {
     type: String,
     enum: TASK_STATUS_ENUM,
-    default: TASK_STATUS.INCOMPLETE,
+    default: TASK_STATUS.PENDING,               
   },
   priority: {
-    type: Number,
-    default: 1,
+    type: String,
+    enum: TASK_PRIORITY_ENUM,
+    default: TASK_PRIORITY.HIGH,
   },
 }, 
 { 

@@ -1,5 +1,5 @@
 const Joi = require("joi");
-const {TASK_STATUS_ENUM} = require("../configs/constants.config"); 
+const {TASK_STATUS_ENUM, TASK_PRIORITY_ENUM} = require("../configs/constants.config"); 
 
 const taskSchema = Joi.object({
   name: Joi.string().min(3).max(200).required().messages({
@@ -9,10 +9,9 @@ const taskSchema = Joi.object({
     "string.max": "The 'name' must be at most 200 characters long.",
   }),
 
-  taskDescription: Joi.string().min(10).max(1000).required().messages({
+  description: Joi.string().max(1000).required().messages({
     "any.required": "The 'task description' field is required.",
     "string.empty": "The 'task description' field cannot be empty.",
-    "string.min": "The 'task description' must be at least 10 characters long.",
     "string.max":
       "The 'task description' must be at most 1000 characters long.",
   }),
@@ -24,10 +23,10 @@ const taskSchema = Joi.object({
     "string.base": "The 'status' must be a string.",
   }),
 
-priority: Joi.number()
-  .valid(1, 2, 3)
+priority: Joi.string()
+  .valid(...TASK_PRIORITY_ENUM)
   .messages({
-    "any.only": "The 'priority' must be either 1, 2, or 3.",
+    "any.only": `The 'prority' must be one of: ${TASK_PRIORITY_ENUM.join(", ")}.`,
     "number.base": "The 'priority' must be a number.",
   }),
 });
@@ -45,12 +44,10 @@ const updatetaskSchema = Joi.object({
       "string.base": "The 'name' must be a string.",
     }),
 
-  taskDescription: Joi.string()
-    .min(10)
+    description: Joi.string()
     .max(1000)
     .optional()
     .messages({
-      "string.min": "The 'task description' must be at least 10 characters long.",
       "string.max": "The 'task description' must be at most 1000 characters long.",
       "string.base": "The 'task description' must be a string.",
     }),
@@ -64,10 +61,10 @@ const updatetaskSchema = Joi.object({
     }),
 
   priority: Joi.number()
-    .valid(1, 2, 3)
+    .valid(...TASK_PRIORITY_ENUM)
     .optional()
     .messages({
-      "any.only": "The 'priority' must be either 1, 2, or 3.",
+      "any.only": `The 'prority' must be one of: ${TASK_PRIORITY_ENUM.join(", ")}.`,
       "number.base": "The 'priority' must be a number.",
     }),
 
