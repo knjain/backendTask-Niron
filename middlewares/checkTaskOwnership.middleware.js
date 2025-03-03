@@ -1,23 +1,20 @@
-const { getHotelById } = require("../services/task.service");
+const { getTask } = require("../services/task.service");
 
 const checkOwnership = async (req, res, next) => {
   try {
-    const userId = req.user._id;
-    const hotelId = req.params.id;
-
-    // Find the hotel by ID
-    const hotel = await getHotelById(hotelId);
-    if (!hotel) {
-      return res.status(404).json({ error: "Hotel not found." });
+    const userId = req.user.userId;
+   
+    // Find the Task by ID
+    const task = await getTask(req.params.id);
+    if (!task) {
+      return res.status(404).json({ error: "Task not found." });
     }
-
     // Compare the user ID with the 'createdBy' field of the hotel
-    if (hotel.createdBy.toString() !== userId.toString()) {
+    if (task.createdBy.toString() !== userId.toString()) {
       return res
         .status(403)
-        .json({ error: "Unauthorized. You do not own this hotel." });
+        .json({ error: "Unauthorized. You do not own this Task." });
     }
-
     next();
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error." });

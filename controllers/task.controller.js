@@ -28,11 +28,9 @@ module.exports = {
 
   updateTask: async (req, res) => {
     try {
-      const hotelId = req.params.id;
       const updatedHotel = await taskService.updateTask(
-        hotelId,
+        req.params.id,
         req.body,
-        req.files
       );
 
       if (!updatedHotel) {
@@ -45,20 +43,19 @@ module.exports = {
     }
   },
 
-  deleteTask: async (hotelId) => {
+  deleteTask: async (req, res) => {
     try {
-      // Find the hotel by ID
-      const hotel = await taskService.findById(hotelId);
-      if (!hotel) {
-        throw new Error("Hotel not found.");
+      const deletedTask = await taskService.deleteTaskById(req.params.id);
+  
+      if (!deletedTask) {
+        return res.status(404).json({ message: "Task not found" });
       }
-
-      // Delete the hotel from the database
-      await taskService.findByIdAndDelete(hotelId);
-
-      return { message: "Hotel and associated media deleted successfully." };
+  
+      res.status(200).json({ message: "Task deleted successfully.", id: req.params.id });
     } catch (error) {
-      throw new Error(error.message);
+      console.error("Delete Error:", error); 
+      res.status(500).json({ message: "Internal server error" });
     }
   },
+  
 };

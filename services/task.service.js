@@ -4,7 +4,6 @@ const fs = require("fs-extra");
 
 module.exports = {
   createTask: async (data, createdBy) => {
-    console.log("in service", data, createdBy);
     const task = new Tasks({ ...data, createdBy });
     return await task.save();
   },
@@ -13,12 +12,15 @@ module.exports = {
     return await Tasks.find({createdBy: userId});
   },
 
-  updateHotel: async (taskId, updateData) => {
-    const updateObj = { ...updateData };
-    return await Tasks.findByIdAndUpdate(taskId, updateObj, { new: true });
+  getTask: async (taskId) => {
+    return await Tasks.findById(taskId);
   },
 
-  deleteHotel: async (hotelId) => {
-    return await Tasks.findByIdAndDelete(hotelId);
+  updateTask: async (taskId, updateData) => {
+    return await Tasks.findByIdAndUpdate(taskId, updateData, { new: true });
+  },
+
+  deleteTaskById: async (taskId) => {
+    return await Tasks.findByIdAndDelete(taskId);
   },
 };
