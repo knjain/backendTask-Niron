@@ -28,20 +28,19 @@ module.exports = {
 
   updateTask: async (req, res) => {
     try {
-      const updatedHotel = await taskService.updateTask(
-        req.params.id,
-        req.body,
-      );
-
-      if (!updatedHotel) {
-        return res.status(404).json({ error: "Hotel not found." });
+      const updatedTask = await taskService.updateTask(req.params.id, req.body);
+  
+      if (!updatedTask) {
+        return res.status(404).json({ message: "Task not found" });
       }
-
-      res.json({ message: "Hotel updated successfully", hotel: updatedHotel });
+  
+      res.status(200).json(updatedTask);
     } catch (error) {
-      res.status(500).json({ error: error.message });
+      console.error("Update Error:", error);
+      res.status(500).json({ message: "Failed to update task" });
     }
   },
+  
 
   deleteTask: async (req, res) => {
     try {
